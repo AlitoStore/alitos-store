@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Alito's Store</title>
+  <style>
+    body { font-family: Arial; margin: 0; background: #f5f5f5; }
+    header { background: black; color: white; padding: 15px; text-align: center; }
+    .container { display: flex; flex-wrap: wrap; justify-content: center; }
+    .product {
+      background: white;
+      margin: 10px;
+      padding: 15px;
+      width: 220px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    img { width: 100%; border-radius: 10px; }
+    button {
+      background: green;
+      color: white;
+      border: none;
+      padding: 10px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Alito's Store 🛍️</h1>
+  <p>Ropa | Calzado | Perfumes</p>
+</header>
+
+<div class="container">
+
+  <!-- PRODUCTO 1 -->
+  <div class="product">
+    <img src="https://via.placeholder.com/200">
+    <h3>Perfume Lattafa</h3>
+    <p>$15</p>
+    <button onclick="comprar('Perfume Lattafa')">Comprar</button>
+  </div>
+
+  <!-- PRODUCTO 2 -->
+  <div class="product">
+    <img src="https://via.placeholder.com/200">
+    <h3>Zapatos deportivos</h3>
+    <p>$12</p>
+    <button onclick="comprar('Zapatos deportivos')">Comprar</button>
+  </div>
+
+</div>
+
+<script>
+function comprar(producto) {
+  window.open(`https://wa.me/584122520016?text=Hola quiero comprar ${producto}`);
+}
+</script>
+
+</body>
+</html>
