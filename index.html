@@ -2,94 +2,1144 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alito's Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial; margin: 0; background: #f5f5f5; }
-    header {
-  background: linear-gradient(90deg, black, #444);
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-      display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-    .product {
-  background: white;
-  margin: 20px 0;
-  padding: 20px;
-  width: 90%;
-  max-width: 350px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-    .product:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
-}
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dark: #8B6914;
+      --black: #0A0A0A;
+      --dark: #111111;
+      --dark2: #1A1A1A;
+      --dark3: #222222;
+      --gray: #888888;
+      --light: #F5F0E8;
+      --white: #FDFAF4;
+      --radius: 12px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    img { width: 100%; border-radius: 10px; }
-    button {
-      background: green;
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: var(--black);
+      font-size: 16px;
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.5px;
+    }
+
+    .logo-text span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 0;
+    }
+
+    .nav-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--gold);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .nav-cart {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cart-btn {
+      position: relative;
+      background: none;
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      color: var(--gold);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cart-btn:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    .cart-count {
+      background: var(--gold);
+      color: var(--black);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-btn { display: none; background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #0A0A0A 0%, #1A1208 50%, #0A0A0A 100%);
+      padding: 80px 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201, 168, 76, 0.12) 0%, transparent 70%);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(201, 168, 76, 0.1);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 6px 20px;
+      border-radius: 30px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .hero h1 span { color: var(--gold); }
+
+    .hero p {
+      color: var(--gray);
+      font-size: 1rem;
+      max-width: 480px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--black);
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: all var(--transition);
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201, 168, 76, 0.35); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all var(--transition);
+    }
+
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ===== SECTIONS ===== */
+    section { padding: 70px 2rem; }
+    .section-header { text-align: center; margin-bottom: 50px; }
+    .section-label { color: var(--gold); font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 500; display: block; margin-bottom: 10px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700; }
+    .divider { width: 50px; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); margin: 16px auto 0; }
+
+    /* ===== CATEGORY TABS ===== */
+    .category-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .tab-btn {
+      background: var(--dark2);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: var(--gray);
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      letter-spacing: 0.5px;
+    }
+
+    .tab-btn:hover, .tab-btn.active {
+      background: rgba(201, 168, 76, 0.12);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* ===== PRODUCT GRID ===== */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background: var(--dark2);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all var(--transition);
+      position: relative;
+    }
+
+    .product-card:hover {
+      border-color: rgba(201, 168, 76, 0.35);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .product-image {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: var(--dark3);
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-image img { transform: scale(1.06); }
+
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--black);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .product-wishlist {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(10,10,10,0.7);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--gray);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all var(--transition);
+    }
+
+    .product-wishlist:hover, .product-wishlist.active { color: #e85c75; border-color: #e85c75; background: rgba(232,92,117,0.15); }
+
+    .product-info { padding: 18px 20px 20px; }
+    .product-category { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; margin-bottom: 6px; }
+    .product-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
+    .product-desc { color: var(--gray); font-size: 0.82rem; margin-bottom: 14px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    .product-footer { display: flex; align-items: center; justify-content: space-between; }
+
+    .product-price {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .price-current { font-size: 1.3rem; font-weight: 700; color: var(--gold); }
+    .price-old { font-size: 0.8rem; color: var(--gray); text-decoration: line-through; }
+
+    .btn-buy {
+      background: rgba(201, 168, 76, 0.1);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      color: var(--gold);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-buy:hover { background: var(--gold); color: var(--black); }
+
+    /* ===== PRODUCT MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--dark2);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 860px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(20px) scale(0.97);
+      transition: transform var(--transition);
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) transparent;
+    }
+
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .modal-close {
+      background: rgba(255,255,255,0.07);
+      border: none;
+      color: var(--white);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover { background: rgba(255,255,255,0.15); }
+
+    .modal-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    @media (max-width: 640px) {
+      .modal-body { grid-template-columns: 1fr; }
+    }
+
+    .modal-gallery { padding: 24px; }
+
+    .gallery-main {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--dark3);
+      margin-bottom: 12px;
+    }
+
+    .gallery-main img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s; }
+
+    .gallery-thumbs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .gallery-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color var(--transition);
+      flex-shrink: 0;
+    }
+
+    .gallery-thumb.active { border-color: var(--gold); }
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .modal-details {
+      padding: 24px 24px 24px 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-category { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .modal-name { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 12px; line-height: 1.3; }
+
+    .modal-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 16px; }
+    .modal-stars span { color: var(--gray); font-size: 0.8rem; margin-left: 6px; }
+
+    .modal-price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+    .modal-price { font-size: 2rem; font-weight: 700; color: var(--gold); }
+    .modal-price-old { font-size: 1rem; color: var(--gray); text-decoration: line-through; }
+
+    .modal-description { color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.75; margin-bottom: 20px; }
+
+    .modal-specs { margin-bottom: 24px; }
+    .modal-specs h4 { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.85rem;
+    }
+
+    .spec-label { color: var(--gray); }
+    .spec-value { font-weight: 500; }
+
+    .modal-sizes { margin-bottom: 24px; }
+    .modal-sizes h4 { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .size-options { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .size-btn {
+      background: var(--dark3);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--white);
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .size-btn:hover, .size-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.1); }
+
+    .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+
+    .btn-wsp {
+      background: #25D366;
       color: white;
       border: none;
-      padding: 10px;
-      margin-top: 10px;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
       cursor: pointer;
-      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all var(--transition);
+    }
+
+    .btn-wsp:hover { background: #1fbb5b; transform: translateY(-1px); }
+
+    /* ===== FEATURES STRIP ===== */
+    .features-strip {
+      background: var(--dark2);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 32px 2rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .feature-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .feature-icon { font-size: 1.6rem; margin-bottom: 4px; }
+    .feature-title { font-size: 0.85rem; font-weight: 600; }
+    .feature-desc { color: var(--gray); font-size: 0.78rem; }
+
+    /* ===== PROMO BANNER ===== */
+    .promo-banner {
+      background: linear-gradient(135deg, #1A1208, #0D0A04);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      border-radius: 20px;
+      padding: 48px 40px;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .promo-banner h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 12px; }
+    .promo-banner p { color: var(--gray); margin-bottom: 24px; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(201, 168, 76, 0.15);
+      padding: 48px 2rem 24px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 40px;
+      max-width: 1100px;
+      margin: 0 auto 40px;
+    }
+
+    .footer-brand .logo-text { font-size: 1.5rem; }
+    .footer-brand p { color: var(--gray); font-size: 0.85rem; margin-top: 10px; line-height: 1.7; }
+
+    .footer-links h4 { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .footer-links ul { list-style: none; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a { color: var(--gray); text-decoration: none; font-size: 0.85rem; transition: color var(--transition); }
+    .footer-links a:hover { color: var(--white); }
+
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom p { color: var(--gray); font-size: 0.8rem; }
+
+    .social-links { display: flex; gap: 12px; }
+    .social-link {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--dark2);
+      border: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all var(--transition);
+    }
+
+    .social-link:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--dark2);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--white);
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all var(--transition);
+      pointer-events: none;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); pointer-events: all; }
+    .toast-icon { color: var(--gold); font-size: 1.1rem; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.mobile-open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(10,10,10,0.98);
+        padding: 16px;
+        border-bottom: 1px solid rgba(201,168,76,0.2);
+      }
+      .menu-btn { display: block; }
+      .footer-grid { grid-template-columns: 1fr; gap: 28px; }
     }
   </style>
 </head>
-
 <body>
 
-<header>
-  <h1>Alito's Store 🛍️</h1>
-  <p>Ropa | Calzado | Perfumes</p>
-</header>
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
-  padding: 20px;
-}
-<div class="container">
-<h2 style="text-align:center;">Perfumes</h2>
-<div class="container">
-  <!-- PRODUCTO 1 -->
-  <div class="product">
-    <img src="https://via.placeholder.com/200">
-    <h3>Perfume Lattafa</h3>
-    <p>$15</p>
-    <button onclick="comprar('Perfume Lattafa')">Comprar</button>
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-icon">A</div>
+    <span class="logo-text">Alito<span>'s</span> Store</span>
+  </a>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#inicio" class="active">Inicio</a></li>
+    <li><a href="#perfumes">Perfumes</a></li>
+    <li><a href="#calzado">Calzado</a></li>
+    <li><a href="#ropa">Ropa</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+
+  <div class="nav-cart">
+    <button class="cart-btn" onclick="openCart()">
+      🛍️ Carrito
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
   </div>
-  <div class="container">
-<h2 style="text-align:center;">Zapatos Deportivos</h2>
-<div class="container">
-  <!-- PRODUCTO 2 -->
-  <div class="product">
-    <img src='https://i.postimg.cc/0QhXRLFY/BOTA-2.jpg'>
-    <h3>Zapatos deportivos</h3>
-    <p>$12</p>
-    <button onclick="comprar('Zapatos deportivos')">Comprar</button>
+</nav>
+
+<!-- HERO -->
+<div id="inicio" class="hero">
+  <span class="hero-badge">✦ Nueva Colección 2025</span>
+  <h1>Estilo que<br><span>te define</span></h1>
+  <p>Perfumes exclusivos, calzado deportivo y ropa personalizada con la mejor calidad al mejor precio.</p>
+  <div class="hero-actions">
+    <a href="#catalogo" class="btn-primary">Ver Catálogo</a>
+    <a href="#contacto" class="btn-outline">Contactar</a>
   </div>
-  <div class="container">
-<div class="product">
-  <img src="https://via.placeholder.com/200">
-  <h3>Franela personalizada</h3>
-  <p>$10</p>
-  <button onclick="comprar('Franela personalizada')">Comprar</button>
 </div>
+
+<!-- FEATURES -->
+<div class="features-strip">
+  <div class="features-grid">
+    <div class="feature-item">
+      <div class="feature-icon">🚚</div>
+      <div class="feature-title">Envío rápido</div>
+      <div class="feature-desc">Entrega a domicilio disponible</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">💎</div>
+      <div class="feature-title">Calidad garantizada</div>
+      <div class="feature-desc">Productos seleccionados</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">💬</div>
+      <div class="feature-title">Atención directa</div>
+      <div class="feature-desc">Por WhatsApp 24/7</div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🔄</div>
+      <div class="feature-title">Cambios fáciles</div>
+      <div class="feature-desc">Sin complicaciones</div>
+    </div>
+  </div>
+</div>
+
+<!-- CATALOG -->
+<section id="catalogo">
+  <div class="section-header">
+    <span class="section-label">Nuestros productos</span>
+    <h2 class="section-title">Catálogo</h2>
+    <div class="divider"></div>
+  </div>
+
+  <div class="category-tabs">
+    <button class="tab-btn active" onclick="filterCategory('all', this)">Todos</button>
+    <button class="tab-btn" onclick="filterCategory('perfumes', this)">🌸 Perfumes</button>
+    <button class="tab-btn" onclick="filterCategory('calzado', this)">👟 Calzado</button>
+    <button class="tab-btn" onclick="filterCategory('ropa', this)">👕 Ropa</button>
+  </div>
+
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- PROMO SECTION -->
+<section id="contacto" style="padding: 40px 2rem 70px;">
+  <div class="promo-banner">
+    <h2>¿Tienes alguna duda? 💬</h2>
+    <p>Contáctanos directamente por WhatsApp y te atendemos al instante con los mejores precios.</p>
+    <button class="btn-wsp" onclick="abrirWSP('Hola! Quiero información sobre sus productos')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Escribirnos por WhatsApp
+    </button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo" style="margin-bottom: 12px;">
+        <div class="logo-icon">A</div>
+        <span class="logo-text">Alito<span>'s</span> Store</span>
+      </div>
+      <p>Tu tienda de confianza para ropa, calzado y perfumes. Calidad y estilo al mejor precio.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Categorías</h4>
+      <ul>
+        <li><a href="#perfumes">Perfumes</a></li>
+        <li><a href="#calzado">Calzado Deportivo</a></li>
+        <li><a href="#ropa">Ropa y Franelas</a></li>
+      </ul>
+    </div>
+    <div class="footer-links" id="contacto">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="https://wa.me/584122520016">WhatsApp</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Alito's Store. Todos los derechos reservados.</p>
+    <div class="social-links">
+      <a href="https://wa.me/584122520016" class="social-link">💬</a>
+      <a href="#" class="social-link">📷</a>
+      <a href="#" class="social-link">📘</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="productModal">
+    <div class="modal-header">
+      <span id="modalBreadcrumb" style="color: var(--gray); font-size: 0.82rem;"></span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-gallery">
+        <div class="gallery-main"><img id="mainPhoto" src="" alt="Producto"></div>
+        <div class="gallery-thumbs" id="galleryThumbs"></div>
+      </div>
+      <div class="modal-details">
+        <div class="modal-category" id="modalCategory"></div>
+        <h2 class="modal-name" id="modalName"></h2>
+        <div class="modal-stars">★★★★★ <span>(12 reseñas)</span></div>
+        <div class="modal-price-row">
+          <span class="modal-price" id="modalPrice"></span>
+          <span class="modal-price-old" id="modalPriceOld"></span>
+        </div>
+        <p class="modal-description" id="modalDesc"></p>
+        <div class="modal-specs" id="modalSpecsContainer">
+          <h4>Características</h4>
+          <div id="modalSpecs"></div>
+        </div>
+        <div class="modal-sizes" id="sizesContainer" style="display:none;">
+          <h4>Tallas disponibles</h4>
+          <div class="size-options" id="sizeOptions"></div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-primary" style="width:100%; text-align:center;" onclick="addToCart()">Agregar al carrito</button>
+          <button class="btn-wsp" id="wspBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Comprar por WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✓</span>
+  <span id="toastMsg">Agregado al carrito</span>
 </div>
 
 <script>
-function comprar(producto) {
-  window.open(`https://wa.me/584122520016?text=Hola quiero comprar ${producto}`);
-}
-</script>
+// ===== PRODUCTS DATA =====
+const productos = [
+  {
+    id: 1, category: "perfumes",
+    name: "Perfume Lattafa",
+    desc: "Fragancia oriental duradera con notas de oud, madera de sándalo y especias cálidas. Duración de más de 8 horas.",
+    price: 15, priceOld: 20,
+    badge: "Popular",
+    images: [
+      "https://images.unsplash.com/photo-1541643600914-78b084683702?w=600&q=80",
+      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=600&q=80",
+      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600&q=80"
+    ],
+    specs: [
+      { label: "Volumen", value: "100 ml" },
+      { label: "Duración", value: "8+ horas" },
+      { label: "Tipo", value: "Oriental / Madera" },
+      { label: "Género", value: "Unisex" }
+    ]
+  },
+  {
+    id: 2, category: "calzado",
+    name: "Bota Deportiva",
+    desc: "Bota de alto rendimiento con suela antideslizante, ideal para todo tipo de terreno. Comodidad y estilo combinados.",
+    price: 12, priceOld: 18,
+    badge: "Nuevo",
+    images: [
+      "https://i.postimg.cc/0QhXRLFY/BOTA-2.jpg",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80"
+    ],
+    specs: [
+      { label: "Material", value: "Cuero sintético" },
+      { label: "Suela", value: "Antideslizante" },
+      { label: "Cierre", value: "Cordones" },
+      { label: "Uso", value: "Casual / Sport" }
+    ],
+    sizes: ["37", "38", "39", "40", "41", "42", "43"]
+  },
+  {
+    id: 3, category: "ropa",
+    name: "Franela Personalizada",
+    desc: "Franela 100% algodón con diseño exclusivo personalizado. Disponible en múltiples colores y tallas. Perfecta para el día a día.",
+    price: 10, priceOld: null,
+    badge: null,
+    images: [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
+      "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&q=80",
+      "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600&q=80"
+    ],
+    specs: [
+      { label: "Material", value: "100% Algodón" },
+      { label: "Corte", value: "Regular / Slim" },
+      { label: "Personalización", value: "Disponible" },
+      { label: "Colores", value: "Múltiples opciones" }
+    ],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"]
+  },
+  {
+    id: 4, category: "perfumes",
+    name: "Colonia Fresh Sport",
+    desc: "Fragancia fresca y energizante con notas cítricas y acuáticas. Perfecta para el día a día y el deporte.",
+    price: 12, priceOld: 16,
+    badge: null,
+    images: [
+      "https://images.unsplash.com/photo-1594819047050-99defba1f0ac?w=600&q=80",
+      "https://images.unsplash.com/photo-1541643600914-78b084683702?w=600&q=80",
+    ],
+    specs: [
+      { label: "Volumen", value: "80 ml" },
+      { label: "Duración", value: "6 horas" },
+      { label: "Tipo", value: "Fresco / Cítrico" },
+      { label: "Género", value: "Masculino" }
+    ]
+  },
+  {
+    id: 5, category: "calzado",
+    name: "Sneakers Urban",
+    desc: "Zapatillas urbanas de moda con suela ligera y cómoda. Perfectas para la ciudad y el uso casual diario.",
+    price: 14, priceOld: null,
+    badge: "Tendencia",
+    images: [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+      "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&q=80",
+    ],
+    specs: [
+      { label: "Material", value: "Mesh / Tela técnica" },
+      { label: "Suela", value: "EVA ligera" },
+      { label: "Uso", value: "Casual / Urbano" },
+    ],
+    sizes: ["37", "38", "39", "40", "41", "42", "43"]
+  },
+  {
+    id: 6, category: "ropa",
+    name: "Gorra Snapback",
+    desc: "Gorra ajustable con visera plana y bordado premium. Diseño streetwear de alta calidad.",
+    price: 8, priceOld: null,
+    badge: null,
+    images: [
+      "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600&q=80",
+      "https://images.unsplash.com/photo-1534215754734-18e55d13e346?w=600&q=80",
+    ],
+    specs: [
+      { label: "Material", value: "Algodón / Poliéster" },
+      { label: "Ajuste", value: "Snapback regulable" },
+      { label: "Colores", value: "Negro, Blanco, Rojo" },
+    ]
+  }
+];
 
+let cartCount = 0;
+let currentProduct = null;
+
+// ===== RENDER PRODUCTS =====
+function renderProducts(filter = 'all') {
+  const grid = document.getElementById('productGrid');
+  const filtered = filter === 'all' ? productos : productos.filter(p => p.category === filter);
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card" onclick="openModal(${p.id})">
+      <div class="product-image">
+        <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
+        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+        <button class="product-wishlist" onclick="toggleWishlist(event, this)" title="Favorito">♡</button>
+      </div>
+      <div class="product-info">
+        <div class="product-category">${getCategoryLabel(p.category)}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-footer">
+          <div class="product-price">
+            <span class="price-current">$${p.price}</span>
+            ${p.priceOld ? `<span class="price-old">$${p.priceOld}</span>` : ''}
+          </div>
+          <button class="btn-buy" onclick="quickBuy(event, '${p.name}')">Comprar</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getCategoryLabel(cat) {
+  return { perfumes: '🌸 Perfumes', calzado: '👟 Calzado', ropa: '👕 Ropa' }[cat] || cat;
+}
+
+// ===== MODAL =====
+function openModal(id) {
+  const p = productos.find(x => x.id === id);
+  if (!p) return;
+  currentProduct = p;
+
+  document.getElementById('modalBreadcrumb').textContent = `${getCategoryLabel(p.category)} › ${p.name}`;
+  document.getElementById('modalCategory').textContent = getCategoryLabel(p.category);
+  document.getElementById('modalName').textContent = p.name;
+  document.getElementById('modalPrice').textContent = `$${p.price}`;
+  document.getElementById('modalPriceOld').textContent = p.priceOld ? `$${p.priceOld}` : '';
+  document.getElementById('modalDesc').textContent = p.desc;
+
+  const mainPhoto = document.getElementById('mainPhoto');
+  mainPhoto.src = p.images[0];
+
+  const thumbsEl = document.getElementById('galleryThumbs');
+  thumbsEl.innerHTML = p.images.map((img, i) => `
+    <div class="gallery-thumb ${i === 0 ? 'active' : ''}" onclick="changePhoto('${img}', this)">
+      <img src="${img}" alt="">
+    </div>
+  `).join('');
+
+  const specsEl = document.getElementById('modalSpecs');
+  specsEl.innerHTML = (p.specs || []).map(s => `
+    <div class="spec-row">
+      <span class="spec-label">${s.label}</span>
+      <span class="spec-value">${s.value}</span>
+    </div>
+  `).join('');
+
+  const sizesContainer = document.getElementById('sizesContainer');
+  if (p.sizes) {
+    sizesContainer.style.display = 'block';
+    document.getElementById('sizeOptions').innerHTML = p.sizes.map(s => `
+      <button class="size-btn" onclick="selectSize(this)">${s}</button>
+    `).join('');
+  } else {
+    sizesContainer.style.display = 'none';
+  }
+
+  document.getElementById('wspBtn').onclick = () => abrirWSP(`Hola! Quiero comprar: ${p.name} - $${p.price}`);
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function changePhoto(src, thumb) {
+  document.getElementById('mainPhoto').src = src;
+  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+  thumb.classList.add('active');
+}
+
+function selectSize(btn) {
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ===== CART =====
+function addToCart() {
+  if (!currentProduct) return;
+  cartCount++;
+  document.getElementById('cartCount').textContent = cartCount;
+  showToast(`"${currentProduct.name}" agregado al carrito`);
+  closeModal();
+}
+
+function quickBuy(e, nombre) {
+  e.stopPropagation();
+  abrirWSP(`Hola! Me interesa: ${nombre}`);
+}
+
+// ===== WSP =====
+function abrirWSP(msg) {
+  window.open(`https://wa.me/584122520016?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function openCart() {
+  if (cartCount === 0) {
+    showToast('Tu carrito está vacío');
+  } else {
+    abrirWSP(`Hola! Tengo ${cartCount} producto(s) en mi carrito, me pueden ayudar?`);
+  }
+}
+
+// ===== FILTER =====
+function filterCategory(cat, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat);
+  document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ===== WISHLIST =====
+function toggleWishlist(e, btn) {
+  e.stopPropagation();
+  btn.classList.toggle('active');
+  btn.textContent = btn.classList.contains('active') ? '♥' : '♡';
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== NAV =====
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('mobile-open');
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    const href = this.getAttribute('href');
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('navLinks').classList.remove('mobile-open');
+    }
+  });
+});
+
+// ===== INIT =====
+renderProducts();
+</script>
 </body>
 </html>
